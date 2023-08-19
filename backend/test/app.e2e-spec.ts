@@ -9,7 +9,7 @@ import {
   projectTest,
   skillTest,
 } from './entities';
-import { healthTest } from './usecases';
+import { employeesFilterTest, healthTest } from './usecases';
 
 describe('App e2e', () => {
   let app: INestApplication;
@@ -85,5 +85,6 @@ describe('App e2e', () => {
 
   describe('usecases', () => {
     healthTest(pactum);
+    employeesFilterTest(pactum);
   });
 });
