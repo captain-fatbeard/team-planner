@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+    binaryTargets = ["native", "debian-openssl-3.0.x"]
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Employee {
+    id Int @id @default(autoincrement())
+    
+    name String @unique
+
+    // years of experience in general and within the company
+    employeeStartDate String
+    expertiseLevel Int
+    availableHours Int
+
+    createdAt DateTime @default(now()) 
+    updatedAt DateTime @updatedAt
+
+    education Education @relation(fields: [educationId], references: [id])
+    educationId Int
+
+    projects Project[]
+    skills Skill[]
+
+    @@map("employees")
+}
+
+model Project {
+    id Int @id @default(autoincrement())
+
+    name String
+
+    createdAt DateTime @default(now()) 
+    updatedAt DateTime @updatedAt
+
+    employees Employee[]
+
+    @@map("projects")
+}
+
+// knowledge of specifik tools/technologies
+model Skill {
+    id Int @id @default(autoincrement())
+
+    name String @unique
+
+    createdAt DateTime @default(now()) 
+    updatedAt DateTime @updatedAt
+
+    employees Employee[]
+
+    @@map("skills")
+}
+
+model Education {
+    id Int @id @default(autoincrement())
+
+    name String @unique
+
+    createdAt DateTime @default(now()) 
+    updatedAt DateTime @updatedAt
+
+
+    employees Employee[]
+
+    @@map("educations")
+}
