@@ -4,7 +4,7 @@
 
 Plan team projects based on, skills, expertise, available hours and education
 
-[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/captain-fatbeard/team-planner/blob/main/LICENSE.md)
+[![license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/captain-fatbeard/team-planner/blob/main/LICENSE)
 
 </div>
 
