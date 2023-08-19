@@ -74,6 +74,7 @@ export function Planner(): JSX.Element {
       const response = await fetch(process.env.API_URL + '/skills');
       const skills: Skill[] = await response.json();
       setSkills(skills);
+      setSkillsFilter(skills.map(skill => skill.id));
     }
     fetchSkills();
   }, []);
@@ -83,13 +84,15 @@ export function Planner(): JSX.Element {
       const response = await fetch(process.env.API_URL + '/educations');
       const educations: Education[] = await response.json();
       setEducations(educations);
+      setEducationsFilter(educations.map(education => education.id));
     }
     fetchEducations();
   }, []);
 
   return (
-    <div className='text-left mt-20'>
-        <fieldset className="mt-5">
+    <div className='text-left mt-5'>
+      <div className="flex justify-center items-start">
+        <fieldset className="mt-5 p-4 border rounded shadow-md mr-4">
           <legend>Knowledge of specific tools/technologies:</legend>
           {skills.map((skill: Skill) => (
             <div key={skill.id} className="text-xs">
@@ -106,7 +109,7 @@ export function Planner(): JSX.Element {
           ))}
         </fieldset>
 
-        <fieldset className="mt-5">
+        <fieldset className="mt-5 p-4 border rounded shadow-md mr-4">
           <legend>Education:</legend>
           {educations.map((education: Education) => (
             <div key={education.id} className="text-xs">
@@ -123,7 +126,7 @@ export function Planner(): JSX.Element {
           ))}
         </fieldset>
 
-        <fieldset className="mt-5" >
+        <fieldset className="mt-5 p-4 border rounded shadow-md mr-4">
           <legend>Availability:</legend>
             <select
               name="availableHours"
@@ -138,7 +141,7 @@ export function Planner(): JSX.Element {
             </select>
         </fieldset>
 
-        <fieldset className="mt-5" >
+        <fieldset className="mt-5 p-4 border rounded shadow-md">
           <legend>Minimum level of expertise:</legend>
             <select 
               name="expertise" 
@@ -152,45 +155,47 @@ export function Planner(): JSX.Element {
               ))}
             </select>
         </fieldset>
+      </div>
+      
+      <div className="mt-5 text-center">
+        <button 
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded shadow-md"
+          onClick={() => submit()}
+        >
+          Find the best match
+        </button>
+      </div>
 
-        <div className="mt-5">
-          <button 
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4"
-            onClick={() => submit()}
-          >
-            Find the best match
-          </button>
-        </div>  
+        {employees.length === 0 && <div className="mt-10 text-center">No employees found</div>}
 
-        {employees.length === 0 && <div className="mt-10">No employees found</div>}
-
-        {employees.length > 0 && <table className="table-auto w-full text-left mt-10">
-          <thead>
-            <tr>
-              <th>name</th>
-              <th>availableHours</th>
-              <th>expertiseLevel</th>
-              <th>yearsOfExperience</th>
-              <th>education</th>
-              <th>skills</th>
-              <th>on projects</th>
-            </tr>
-          </thead>
-          <tbody>
-            {employees.map((employee: Employee) => (
-              <tr key={employee.id}>
-                <td>{employee.name}</td>
-                <td>{employee.availableHours}</td>
-                <td>{employee.expertiseLevel}</td>
-                <td>{employee.yearsOfExperience}</td>
-                <td>{employee.education}</td>
-                <td>{employee.skills.map(skill => <>{skill}<br/></>)}</td>
-                <td>{employee.projects.map(project => <>{project}<br/></>)}</td>
+        {employees.length > 0 && (
+          <table className="table-auto w-full text-left mt-10 border">
+            <thead>
+              <tr className="bg-gray-100">
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Available Hours</th>
+                <th className="px-4 py-2">Expertise Level</th>
+                <th className="px-4 py-2">Years of Experience</th>
+                <th className="px-4 py-2">Education</th>
+                <th className="px-4 py-2">Skills</th>
+                <th className="px-4 py-2">Projects</th>
               </tr>
-            ))}
-          </tbody>
-        </table>}
-
+            </thead>
+            <tbody>
+              {employees.map((employee: Employee, index) => (
+                <tr key={employee.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-100'}>
+                  <td className="px-4 py-2">{employee.name}</td>
+                  <td className="px-4 py-2">{employee.availableHours}</td>
+                  <td className="px-4 py-2">{employee.expertiseLevel}</td>
+                  <td className="px-4 py-2">{employee.yearsOfExperience}</td>
+                  <td className="px-4 py-2 text-xs">{employee.education}</td>
+                  <td className="px-4 py-2 text-xs">{employee.skills.map(skill => <div key={skill}>{skill}</div>)}</td>
+                  <td className="px-4 py-2 text-xs">{employee.projects.map(project => <div key={project}>{project}</div>)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
     </div>
   );
 }
