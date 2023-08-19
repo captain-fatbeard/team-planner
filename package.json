@@ -1,0 +1,11 @@
+{
+  "name": "team-planner",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Jacob Juul Larsen",
+  "private": true,
+  "license": "mit",
+  "scripts": {
+    "commit": "npx git-cz commit"
+  }
+}
